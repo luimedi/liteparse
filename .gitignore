@@ -25,3 +25,6 @@ liteparse-*.tar
 
 # Rust binary artifacts
 /target/
+
+# Compiled LiteParse NIF
+/priv/native/
