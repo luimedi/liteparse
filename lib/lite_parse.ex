@@ -5,23 +5,30 @@ defmodule LiteParse do
   text extraction.
   """
 
-  @doc """
-  Parses a document file from disk and returns its full text and page count.
+  alias LiteParse.Config
 
-  Only the file path API is exposed right now. `parse_bytes/1` and configuration
-  options will land in future versions.
+  @type parse_result :: %{text: String.t(), page_count: non_neg_integer()}
+
+  @doc """
+  Parses a document file from disk and returns its extracted text and page count.
+
+  ## Options
+
+  See `LiteParse.Config` for the full list. Pass options as a keyword list:
+
+      LiteParse.parse_file("doc.pdf", max_pages: 100, ocr_enabled: false)
+
+  Or as a reusable struct:
+
+      config = LiteParse.Config.new(ocr_enabled: false)
+      LiteParse.parse_file("doc.pdf", config)
 
   Returns `{:ok, %{text: binary, page_count: integer}}` on success or
   `{:error, reason}` if the file cannot be read or parsed.
-
-  ## Examples
-
-      iex> LiteParse.parse_file("priv/fixtures/sample.pdf")
-      {:ok, %{text: "...", page_count: 3}}
-
   """
-  @spec parse_file(Path.t()) :: {:ok, map()} | {:error, String.t()}
-  def parse_file(path) when is_binary(path) do
-    LiteParse.Native.parse_path(path)
+  @spec parse_file(Path.t(), keyword() | Config.t()) ::
+          {:ok, parse_result()} | {:error, String.t()}
+  def parse_file(path, opts \\ []) when is_binary(path) do
+    LiteParse.Native.parse_path(path, Config.to_nif(opts))
   end
 end

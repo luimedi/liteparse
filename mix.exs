@@ -21,6 +21,7 @@ defmodule LiteParse.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:nimble_options, "~> 1.1"},
       {:rustler, "~> 0.38.0", runtime: false}
     ]
   end
