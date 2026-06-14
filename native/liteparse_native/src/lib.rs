@@ -1,8 +1,9 @@
 use std::sync::OnceLock;
 
-use rustler::NifMap;
+use rustler::{Binary, NifMap};
 use tokio::runtime::Runtime;
 
+use liteparse::types::PdfInput;
 use liteparse::{LiteParse, LiteParseConfig, OutputFormat};
 
 #[derive(NifMap)]
@@ -60,6 +61,20 @@ fn parse(path: String, opts: ParseOpts) -> Result<ParseResponse, String> {
 
     let result = runtime()
         .block_on(parser.parse(&path))
+        .map_err(|e| e.to_string())?;
+
+    Ok(ParseResponse {
+        text: result.text,
+        page_count: result.pages.len(),
+    })
+}
+
+#[rustler::nif(schedule = "DirtyCpu")]
+fn parse_input(bytes: Binary, opts: ParseOpts) -> Result<ParseResponse, String> {
+    let parser = LiteParse::new(LiteParseConfig::from(opts));
+
+    let result = runtime()
+        .block_on(parser.parse_input(PdfInput::Bytes(bytes.to_vec())))
         .map_err(|e| e.to_string())?;
 
     Ok(ParseResponse {

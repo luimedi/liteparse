@@ -112,4 +112,55 @@ defmodule LiteParseTest do
       assert count == 1
     end
   end
+
+  describe "parse_input/1,2" do
+    @demo_pdf_bytes File.read!(@demo_pdf)
+
+    test "returns an error tuple for non-PDF bytes" do
+      assert {:error, reason} =
+               Native.parse_input("not a pdf", Config.to_nif([]))
+
+      assert is_binary(reason)
+    end
+
+    test "parse_input/1 delegates with default options" do
+      assert {:error, _} = LiteParse.parse_input("not a pdf")
+    end
+
+    test "parse_input/2 accepts a keyword list" do
+      assert {:error, _} = LiteParse.parse_input("not a pdf", max_pages: 5)
+    end
+
+    test "parse_input/2 accepts a Config struct" do
+      config = Config.new(max_pages: 5)
+      assert {:error, _} = LiteParse.parse_input("not a pdf", config)
+    end
+
+    @tag :fixture
+    test "extracts text and reports page count from in-memory PDF bytes" do
+      assert {:ok, %{text: text, page_count: count}} =
+               LiteParse.parse_input(@demo_pdf_bytes)
+
+      assert is_binary(text)
+      assert text =~ "Lorem ipsum"
+      assert is_integer(count)
+      assert count >= 1
+    end
+
+    @tag :fixture
+    test "honours max_pages override from a keyword list" do
+      assert {:ok, %{page_count: count}} =
+               LiteParse.parse_input(@demo_pdf_bytes, max_pages: 1)
+
+      assert count == 1
+    end
+
+    @tag :fixture
+    test "honours target_pages override from a keyword list" do
+      assert {:ok, %{page_count: count}} =
+               LiteParse.parse_input(@demo_pdf_bytes, target_pages: "1")
+
+      assert count == 1
+    end
+  end
 end
