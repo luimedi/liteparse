@@ -29,6 +29,6 @@ defmodule LiteParse do
   @spec parse_file(Path.t(), keyword() | Config.t()) ::
           {:ok, parse_result()} | {:error, String.t()}
   def parse_file(path, opts \\ []) when is_binary(path) do
-    LiteParse.Native.parse_path(path, Config.to_nif(opts))
+    LiteParse.Native.parse(path, Config.to_nif(opts))
   end
 end

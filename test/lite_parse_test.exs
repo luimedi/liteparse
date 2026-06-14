@@ -69,7 +69,7 @@ defmodule LiteParseTest do
 
   describe "parse_file/1,2" do
     test "returns an error tuple for non-existent files" do
-      assert {:error, reason} = Native.parse_path("/no/such/file.pdf", Config.to_nif([]))
+      assert {:error, reason} = Native.parse("/no/such/file.pdf", Config.to_nif([]))
       assert is_binary(reason)
     end
 

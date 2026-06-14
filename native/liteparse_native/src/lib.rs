@@ -55,7 +55,7 @@ fn runtime() -> &'static Runtime {
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn parse_path(path: String, opts: ParseOpts) -> Result<ParseResponse, String> {
+fn parse(path: String, opts: ParseOpts) -> Result<ParseResponse, String> {
     let parser = LiteParse::new(LiteParseConfig::from(opts));
 
     let result = runtime()
