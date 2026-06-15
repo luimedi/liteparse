@@ -67,28 +67,28 @@ defmodule LiteParseTest do
     end
   end
 
-  describe "parse_file/1,2" do
+  describe "parse/1,2" do
     test "returns an error tuple for non-existent files" do
       assert {:error, reason} = Native.parse("/no/such/file.pdf", Config.to_nif([]))
       assert is_binary(reason)
     end
 
-    test "parse_file/1 delegates with default options" do
-      assert {:error, _} = LiteParse.parse_file("/no/such/file.pdf")
+    test "parse/1 delegates with default options" do
+      assert {:error, _} = LiteParse.parse("/no/such/file.pdf")
     end
 
-    test "parse_file/2 accepts a keyword list" do
-      assert {:error, _} = LiteParse.parse_file("/no/such/file.pdf", max_pages: 5)
+    test "parse/2 accepts a keyword list" do
+      assert {:error, _} = LiteParse.parse("/no/such/file.pdf", max_pages: 5)
     end
 
-    test "parse_file/2 accepts a Config struct" do
+    test "parse/2 accepts a Config struct" do
       config = Config.new(max_pages: 5)
-      assert {:error, _} = LiteParse.parse_file("/no/such/file.pdf", config)
+      assert {:error, _} = LiteParse.parse("/no/such/file.pdf", config)
     end
 
     @tag :fixture
     test "extracts text and reports page count from the demo PDF" do
-      assert {:ok, %{text: text, page_count: count}} = LiteParse.parse_file(@demo_pdf)
+      assert {:ok, %{text: text, page_count: count}} = LiteParse.parse(@demo_pdf)
 
       assert is_binary(text)
       assert text =~ "Lorem ipsum"
@@ -99,7 +99,7 @@ defmodule LiteParseTest do
     @tag :fixture
     test "honours max_pages override from a keyword list" do
       assert {:ok, %{page_count: count}} =
-               LiteParse.parse_file(@demo_pdf, max_pages: 1)
+               LiteParse.parse(@demo_pdf, max_pages: 1)
 
       assert count == 1
     end
@@ -107,7 +107,7 @@ defmodule LiteParseTest do
     @tag :fixture
     test "honours target_pages override from a keyword list" do
       assert {:ok, %{page_count: count}} =
-               LiteParse.parse_file(@demo_pdf, target_pages: "1")
+               LiteParse.parse(@demo_pdf, target_pages: "1")
 
       assert count == 1
     end

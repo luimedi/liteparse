@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Initial release
-- `LiteParse.parse_file/2` for parsing documents from disk
+- `LiteParse.parse/2` for parsing documents from disk
 - `LiteParse.parse_input/2` for parsing documents from in-memory binary data
 - `LiteParse.Config` struct and options for configuring the parser
 - Rustler NIF wrapping the LiteParse Rust library

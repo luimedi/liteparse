@@ -1,17 +1,17 @@
 defmodule LiteParse.Config do
   @moduledoc """
-  Configuration schema for `LiteParse.parse_file/2` and `LiteParse.parse_bytes/2`.
+  Configuration schema for `LiteParse.parse/2` and `LiteParse.parse_input/2`.
 
   Mirrors the options exposed by the underlying `liteparse` Rust crate.
   Pass options as a keyword list, e.g.:
 
-      LiteParse.parse_file("doc.pdf", max_pages: 100, ocr_enabled: false)
+      LiteParse.parse("doc.pdf", max_pages: 100, ocr_enabled: false)
 
   Or build a reusable struct:
 
       config = LiteParse.Config.new(max_pages: 100, ocr_language: "spa")
-      LiteParse.parse_file("a.pdf", config)
-      LiteParse.parse_bytes(bin, config)
+      LiteParse.parse("a.pdf", config)
+      LiteParse.parse_input(bin, config)
   """
 
   @default_num_workers max(System.schedulers_online() - 1, 1)
@@ -142,7 +142,7 @@ defmodule LiteParse.Config do
   it is trusted as already-validated and just converted; when given a keyword
   list, it goes through `NimbleOptions.validate!/2` first.
 
-  Internal-facing but public to keep `LiteParse.parse_file/2` decoupled from
+  Internal-facing but public to keep `LiteParse.parse/2` decoupled from
   the schema definition.
   """
   @spec to_nif(keyword() | t()) :: map()

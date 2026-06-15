@@ -21,7 +21,7 @@ end
 Parse a PDF from disk:
 
 ```elixir
-{:ok, %{text: text, page_count: n}} = LiteParse.parse_file("document.pdf")
+{:ok, %{text: text, page_count: n}} = LiteParse.parse("document.pdf")
 ```
 
 Parse a PDF from binary data:
@@ -33,14 +33,14 @@ Parse a PDF from binary data:
 Options can be passed as a keyword list:
 
 ```elixir
-LiteParse.parse_file("doc.pdf", max_pages: 100, ocr_enabled: false)
+LiteParse.parse("doc.pdf", max_pages: 100, ocr_enabled: false)
 ```
 
 Or as a reusable struct:
 
 ```elixir
 config = LiteParse.Config.new(ocr_language: "spa", max_pages: 50)
-LiteParse.parse_file("doc.pdf", config)
+LiteParse.parse("doc.pdf", config)
 ```
 
 See `LiteParse.Config` for the full list of available options.
@@ -54,4 +54,4 @@ See `LiteParse.Config` for the full list of available options.
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](https://github.com/luimedi/liteparse/blob/main/LICENSE).
