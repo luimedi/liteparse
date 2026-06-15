@@ -45,6 +45,14 @@ LiteParse.parse("doc.pdf", config)
 
 See `LiteParse.Config` for the full list of available options.
 
+## Development
+
+This project uses [lefthook](https://github.com/evilmartians/lefthook) for Git hooks. A pre-commit hook is configured in `lefthook.yml` to automatically run `mix format` on staged `.ex` and `.exs` files, so you don't have to remember to format manually — fixes are re-staged automatically.
+
+```sh
+lefthook install
+```
+
 ## Supported Formats
 
 - PDF (`.pdf`)

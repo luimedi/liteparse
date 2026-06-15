@@ -1,0 +1,6 @@
+pre-commit:
+  commands:
+    format:
+      glob: "*.{ex,exs}"
+      run: mix format
+      stage_fixed: true
