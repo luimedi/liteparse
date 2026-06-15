@@ -1,11 +1,12 @@
 # LiteParse
 
-**TODO: Add description**
+Elixir wrapper for [LiteParse](https://github.com/run-llama/liteparse), a fast and lightweight PDF parser written in Rust. Parsing runs locally with no cloud dependencies.
+
+Note: this Elixir binding exposes a subset of the upstream LiteParse features and may not yet cover all of them. Check the [upstream project](https://github.com/run-llama/liteparse) for the complete capability set.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `liteparse` to your list of dependencies in `mix.exs`:
+Add to your `mix.exs`:
 
 ```elixir
 def deps do
@@ -15,7 +16,42 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/liteparse>.
+## Usage
 
+Parse a PDF from disk:
+
+```elixir
+{:ok, %{text: text, page_count: n}} = LiteParse.parse_file("document.pdf")
+```
+
+Parse a PDF from binary data:
+
+```elixir
+{:ok, %{text: text, page_count: n}} = LiteParse.parse_input(pdf_binary)
+```
+
+Options can be passed as a keyword list:
+
+```elixir
+LiteParse.parse_file("doc.pdf", max_pages: 100, ocr_enabled: false)
+```
+
+Or as a reusable struct:
+
+```elixir
+config = LiteParse.Config.new(ocr_language: "spa", max_pages: 50)
+LiteParse.parse_file("doc.pdf", config)
+```
+
+See `LiteParse.Config` for the full list of available options.
+
+## Supported Formats
+
+- PDF (`.pdf`)
+- Microsoft Office (`.docx`, `.xlsx`, `.pptx`, etc.) — requires LibreOffice
+- OpenDocument (`.odt`, `.ods`, `.odp`) — requires LibreOffice
+- Images (`.png`, `.jpg`, `.tiff`, etc.) — requires ImageMagick
+
+## License
+
+MIT. See [LICENSE](LICENSE).
