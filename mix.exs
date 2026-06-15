@@ -41,8 +41,7 @@ defmodule LiteParse.MixProject do
       description: description(),
       source_url: @source_url,
       licenses: ["MIT"],
-      files:
-        ~w(lib native .formatter.exs mix.exs README.md LICENSE* CHANGELOG*),
+      files: ~w(lib native .formatter.exs mix.exs README.md LICENSE* CHANGELOG*),
       links: %{
         GitHub: @source_url
       }
